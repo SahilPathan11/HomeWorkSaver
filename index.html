@@ -2,165 +2,207 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Homework Save App</title>
+  <title>Homework & Classwork Save App</title>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+    html, body {
+      height: 100%;
       margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: url('https://images.app.goo.gl/KAvtsU89Wb461Fxs5') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
     }
-    h1 {
+
+    h1, h2 {
       text-align: center;
-      color: #000000;
-      margin-bottom: 5px;
+      color: #ffffff;
+      text-shadow: 1px 1px 3px #000;
+      margin: 5px 0;
     }
-    h2 {
-      text-align: center;
-      color: #004d40;
-      margin-top: 0;
-      font-size: 1.2em;
-      font-weight: normal;
-    }
-    #homeworkForm {
-      background-color: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      border-radius: 10px;
+
+    #workForm {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 12px;
       max-width: 400px;
-      margin: auto;
+      width: 90%;
+      z-index: 1000;
     }
-    input, textarea {
-      margin-top: 10px;
-      padding: 10px;
+
+    input, textarea, select {
+      margin-top: 12px;
+      padding: 12px;
       font-size: 1em;
       border: 1px solid #b2dfdb;
-      border-radius: 5px;
+      border-radius: 8px;
       width: 100%;
       box-sizing: border-box;
+      transition: border 0.3s ease-in-out;
     }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #00bfa5;
+    }
+
     button {
-      margin-top: 15px;
-      padding: 10px;
-      background-color: #00ffe1;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #00bfa5;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
       font-size: 1em;
       width: 100%;
+      transition: background-color 0.3s ease-in-out;
     }
+
     button:hover {
-      background-color: #004d40;
+      background-color: #00796b;
     }
-    #homeworkList {
-      margin-top: 30px;
+
+    #workList {
+      margin-top: 500px; /* Space for the fixed form */
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      width: 100%;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 300px; /* Limit height for scrolling */
     }
-    .homeworkItem {
-      background-color: #f9fbe7;
+
+    .workItem {
+      background-color: rgba(255, 255, 255, 0.9);
       border-left: 5px solid #8bc34a;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
       position: relative;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
-    .homeworkItem strong {
+
+    .workItem strong {
       color: #33691e;
     }
+
     .deleteBtn {
       background-color: #e53935;
       color: white;
       border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
+      padding: 6px 12px;
+      border-radius: 8px;
       cursor: pointer;
       position: absolute;
       top: 15px;
       right: 15px;
+      transition: background-color 0.3s ease-in-out;
     }
+
     .deleteBtn:hover {
       background-color: #b71c1c;
     }
+
     footer {
-      text-align: center;
       margin-top: 40px;
       font-size: 0.9em;
-      color: #555;
+      color: #f0f0f0;
+      text-shadow: 1px 1px 3px #000;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎓 Homework Save App</h1>
+  <h1>📚 Homework & Classwork Save App</h1>
   <h2>VSS English School</h2>
-  
-  <div id="homeworkForm">
+
+  <!-- Form to add homework/classwork -->
+  <div id="workForm">
+    <select id="workType" required>
+      <option value="" disabled selected>Select Work Type</option>
+      <option value="Homework">Homework</option>
+      <option value="Classwork">Classwork</option>
+    </select>
     <input type="text" id="subject" placeholder="Subject" required>
     <input type="date" id="dueDate" required>
     <input type="time" id="dueTime" required>
-    <textarea id="details" placeholder="Homework details..." rows="4" required></textarea>
-    <button onclick="saveHomework()">Save Homework</button>
+    <textarea id="details" placeholder="Work details..." rows="4" required></textarea>
+    <button onclick="saveWork()">Save Work</button>
   </div>
 
-  <div id="homeworkList"></div>
+  <!-- List of saved work -->
+  <div id="workList"></div>
 
   <footer>
     Made By 9th Class Student [Sahil Pathan]
   </footer>
 
   <script>
-    function loadHomework() {
-      const homeworkList = document.getElementById('homeworkList');
-      homeworkList.innerHTML = '';
-      const homeworkData = JSON.parse(localStorage.getItem('homework')) || [];
-      homeworkData.forEach((item, index) => {
+    // Load saved homework and classwork from localStorage
+    function loadWork() {
+      const workList = document.getElementById('workList');
+      workList.innerHTML = '';
+      const workData = JSON.parse(localStorage.getItem('work')) || [];
+      workData.forEach((item, index) => {
         const div = document.createElement('div');
-        div.className = 'homeworkItem';
+        div.className = 'workItem';
         div.innerHTML = `
-          <strong>${item.subject}</strong><br>
+          <strong>${item.type}: ${item.subject}</strong><br>
           <p>${item.details}</p>
           <p><em>Due: ${item.dueDate} at ${item.dueTime}</em></p>
-          <button class="deleteBtn" onclick="deleteHomework(${index})">Delete</button>
+          <button class="deleteBtn" onclick="deleteWork(${index})">Delete</button>
         `;
-        homeworkList.appendChild(div);
+        workList.appendChild(div);
       });
     }
 
-    function saveHomework() {
+    // Save homework/classwork to localStorage
+    function saveWork() {
+      const workType = document.getElementById('workType').value;
       const subject = document.getElementById('subject').value.trim();
       const details = document.getElementById('details').value.trim();
       const dueDate = document.getElementById('dueDate').value;
       const dueTime = document.getElementById('dueTime').value;
 
-      if (subject && details && dueDate && dueTime) {
-        const homeworkData = JSON.parse(localStorage.getItem('homework')) || [];
-        homeworkData.push({ subject, details, dueDate, dueTime });
-        localStorage.setItem('homework', JSON.stringify(homeworkData));
+      if (workType && subject && details && dueDate && dueTime) {
+        const workData = JSON.parse(localStorage.getItem('work')) || [];
+        workData.push({ type: workType, subject, details, dueDate, dueTime });
+        localStorage.setItem('work', JSON.stringify(workData));
 
-        // Clear form
+        // Clear form after saving
+        document.getElementById('workType').value = '';
         document.getElementById('subject').value = '';
         document.getElementById('details').value = '';
         document.getElementById('dueDate').value = '';
         document.getElementById('dueTime').value = '';
 
-        loadHomework();
+        loadWork();
       } else {
         alert("Please fill in all fields.");
       }
     }
 
-    function deleteHomework(index) {
-      const homeworkData = JSON.parse(localStorage.getItem('homework')) || [];
-      homeworkData.splice(index, 1);
-      localStorage.setItem('homework', JSON.stringify(homeworkData));
-      loadHomework();
+    // Delete work from localStorage
+    function deleteWork(index) {
+      const workData = JSON.parse(localStorage.getItem('work')) || [];
+      workData.splice(index, 1);
+      localStorage.setItem('work', JSON.stringify(workData));
+      loadWork();
     }
 
-    window.onload = loadHomework;
+    // Load saved work when the page loads
+    window.onload = loadWork;
   </script>
 
 </body>
