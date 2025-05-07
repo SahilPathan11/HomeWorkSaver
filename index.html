@@ -12,7 +12,15 @@
     }
     h1 {
       text-align: center;
-      color: #2e7d32;
+      color: #000000;
+      margin-bottom: 5px;
+    }
+    h2 {
+      text-align: center;
+      color: #004d40;
+      margin-top: 0;
+      font-size: 1.2em;
+      font-weight: normal;
     }
     #homeworkForm {
       background-color: #ffffff;
@@ -28,16 +36,19 @@
       font-size: 1em;
       border: 1px solid #b2dfdb;
       border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
     }
     button {
       margin-top: 15px;
       padding: 10px;
-      background-color: #00796b;
+      background-color: #00ffe1;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-size: 1em;
+      width: 100%;
     }
     button:hover {
       background-color: #004d40;
@@ -74,19 +85,32 @@
     .deleteBtn:hover {
       background-color: #b71c1c;
     }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #555;
+    }
   </style>
 </head>
 <body>
 
   <h1>🎓 Homework Save App</h1>
+  <h2>VSS English School</h2>
   
   <div id="homeworkForm">
     <input type="text" id="subject" placeholder="Subject" required>
+    <input type="date" id="dueDate" required>
+    <input type="time" id="dueTime" required>
     <textarea id="details" placeholder="Homework details..." rows="4" required></textarea>
     <button onclick="saveHomework()">Save Homework</button>
   </div>
 
   <div id="homeworkList"></div>
+
+  <footer>
+    Made by 9th class student Sahil Pathan
+  </footer>
 
   <script>
     function loadHomework() {
@@ -99,6 +123,7 @@
         div.innerHTML = `
           <strong>${item.subject}</strong><br>
           <p>${item.details}</p>
+          <p><em>Due: ${item.dueDate} at ${item.dueTime}</em></p>
           <button class="deleteBtn" onclick="deleteHomework(${index})">Delete</button>
         `;
         homeworkList.appendChild(div);
@@ -108,15 +133,23 @@
     function saveHomework() {
       const subject = document.getElementById('subject').value.trim();
       const details = document.getElementById('details').value.trim();
-      if (subject && details) {
+      const dueDate = document.getElementById('dueDate').value;
+      const dueTime = document.getElementById('dueTime').value;
+
+      if (subject && details && dueDate && dueTime) {
         const homeworkData = JSON.parse(localStorage.getItem('homework')) || [];
-        homeworkData.push({ subject, details });
+        homeworkData.push({ subject, details, dueDate, dueTime });
         localStorage.setItem('homework', JSON.stringify(homeworkData));
+
+        // Clear form
         document.getElementById('subject').value = '';
         document.getElementById('details').value = '';
+        document.getElementById('dueDate').value = '';
+        document.getElementById('dueTime').value = '';
+
         loadHomework();
       } else {
-        alert("Please fill in both fields.");
+        alert("Please fill in all fields.");
       }
     }
 
