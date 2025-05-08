@@ -8,6 +8,7 @@
       height: 100%;
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
     }
 
     body {
@@ -33,40 +34,35 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background-color: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      padding: 30px;
-      border-radius: 12px;
-      max-width: 400px;
-      width: 90%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      width: 85%;
       z-index: 1000;
+      font-size: 0.9em;
     }
 
     input, textarea, select {
-      margin-top: 12px;
-      padding: 12px;
-      font-size: 1em;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 0.95em;
       border: 1px solid #b2dfdb;
-      border-radius: 8px;
+      border-radius: 6px;
       width: 100%;
       box-sizing: border-box;
-      transition: border 0.3s ease-in-out;
-    }
-
-    input:focus, textarea:focus, select:focus {
-      border-color: #00bfa5;
     }
 
     button {
-      margin-top: 20px;
-      padding: 12px;
+      margin-top: 16px;
+      padding: 10px;
       background-color: #00bfa5;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 1em;
+      font-size: 0.95em;
       width: 100%;
-      transition: background-color 0.3s ease-in-out;
     }
 
     button:hover {
@@ -75,25 +71,27 @@
 
     #workList {
       margin-top: 500px;
-      max-width: 600px;
+      max-width: 800px;
       width: 100%;
       padding: 20px;
-      overflow-y: auto;
       max-height: 300px;
+      overflow-y: auto;
     }
 
-    .workItem {
+    .studentBlock {
       background-color: rgba(255, 255, 255, 0.9);
-      border-left: 5px solid #8bc34a;
+      border-left: 5px solid #00bfa5;
       padding: 20px;
       margin-bottom: 20px;
       border-radius: 12px;
-      position: relative;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .workItem strong {
-      color: #33691e;
+    .workItem {
+      background-color: #f0f0f0;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
     }
 
     .deleteBtn {
@@ -103,12 +101,7 @@
       padding: 6px 12px;
       border-radius: 5px;
       cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 0.9em;
-      white-space: nowrap;
-      max-width: 100px;
+      margin-top: 5px;
     }
 
     .deleteBtn:hover {
@@ -126,11 +119,12 @@
 </head>
 <body>
 
-  <h1>📚 Homework & Classwork Save App</h1>
+  <h1>📚 Homework & Classwork Saver Website</h1>
   <h2>VSS English School</h2>
 
-  <!-- Form to add homework/classwork -->
   <div id="workForm">
+    <input type="text" id="studentName" placeholder="Student Name" required>
+    <input type="text" id="studentClass" placeholder="Class (e.g., 9th A)" required>
     <select id="workType" required>
       <option value="" disabled selected>Select Work Type</option>
       <option value="Homework">Homework</option>
@@ -143,7 +137,6 @@
     <button onclick="saveWork()">Save Work</button>
   </div>
 
-  <!-- List of saved work -->
   <div id="workList"></div>
 
   <footer>
@@ -151,38 +144,59 @@
   </footer>
 
   <script>
-    // Load saved homework and classwork from localStorage
+    function groupByStudent(data) {
+      const grouped = {};
+      data.forEach((item, index) => {
+        const key = `${item.studentName} (${item.studentClass})`;
+        if (!grouped[key]) grouped[key] = [];
+        grouped[key].push({ ...item, index });
+      });
+      return grouped;
+    }
+
     function loadWork() {
       const workList = document.getElementById('workList');
       workList.innerHTML = '';
       const workData = JSON.parse(localStorage.getItem('work')) || [];
-      workData.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'workItem';
-        div.innerHTML = `
-          <strong>${item.type}: ${item.subject}</strong><br>
-          <p>${item.details}</p>
-          <p><em>Due: ${item.dueDate} at ${item.dueTime}</em></p>
-          <button class="deleteBtn" onclick="deleteWork(${index})">Delete</button>
-        `;
-        workList.appendChild(div);
+      const groupedData = groupByStudent(workData);
+
+      Object.keys(groupedData).forEach(studentKey => {
+        const studentDiv = document.createElement('div');
+        studentDiv.className = 'studentBlock';
+        studentDiv.innerHTML = `<strong>${studentKey}</strong>`;
+
+        groupedData[studentKey].forEach(item => {
+          const itemDiv = document.createElement('div');
+          itemDiv.className = 'workItem';
+          itemDiv.innerHTML = `
+            <strong>${item.type}: ${item.subject}</strong><br>
+            <p>${item.details}</p>
+            <p><em>Due: ${item.dueDate} at ${item.dueTime}</em></p>
+            <button class="deleteBtn" onclick="deleteWork(${item.index})">Delete</button>
+          `;
+          studentDiv.appendChild(itemDiv);
+        });
+
+        workList.appendChild(studentDiv);
       });
     }
 
-    // Save homework/classwork to localStorage
     function saveWork() {
+      const studentName = document.getElementById('studentName').value.trim();
+      const studentClass = document.getElementById('studentClass').value.trim();
       const workType = document.getElementById('workType').value;
       const subject = document.getElementById('subject').value.trim();
       const details = document.getElementById('details').value.trim();
       const dueDate = document.getElementById('dueDate').value;
       const dueTime = document.getElementById('dueTime').value;
 
-      if (workType && subject && details && dueDate && dueTime) {
+      if (studentName && studentClass && workType && subject && details && dueDate && dueTime) {
         const workData = JSON.parse(localStorage.getItem('work')) || [];
-        workData.push({ type: workType, subject, details, dueDate, dueTime });
+        workData.push({ studentName, studentClass, type: workType, subject, details, dueDate, dueTime });
         localStorage.setItem('work', JSON.stringify(workData));
 
-        // Clear form after saving
+        document.getElementById('studentName').value = '';
+        document.getElementById('studentClass').value = '';
         document.getElementById('workType').value = '';
         document.getElementById('subject').value = '';
         document.getElementById('details').value = '';
@@ -195,7 +209,6 @@
       }
     }
 
-    // Delete work from localStorage
     function deleteWork(index) {
       const workData = JSON.parse(localStorage.getItem('work')) || [];
       workData.splice(index, 1);
@@ -203,7 +216,6 @@
       loadWork();
     }
 
-    // Load saved work when the page loads
     window.onload = loadWork;
   </script>
 
