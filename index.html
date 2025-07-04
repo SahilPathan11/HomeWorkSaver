@@ -2,160 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Homework Saver</title>
+  <title>ClassWork & HomeWork Saver</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(-45deg, #1e3c72, #2a5298, #2a5298, #1e3c72);
       background-size: 400% 400%;
       animation: shinyBackground 15s ease infinite;
       color: #f0f4f8;
+      margin: 0;
+      padding: 0;
     }
 
     @keyframes shinyBackground {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .container {
-      max-width: 400px;
+      max-width: 420px;
       margin: 60px auto;
       background: #1f2a44dd;
       border-radius: 16px;
-      padding: 30px;
+      padding: 30px 25px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
     }
 
-    h1,
-    h2 {
+    h1, h2 {
       text-align: center;
-      margin-bottom: 24px;
-      font-weight: 700;
-      letter-spacing: 1.1px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+      margin-bottom: 20px;
     }
 
     label {
+      margin-top: 15px;
       display: block;
       font-weight: 600;
-      margin-top: 18px;
-      margin-bottom: 6px;
-      color: #d0d7e3;
+      font-size: 14px;
     }
 
-    input,
-    textarea,
-    select {
+    input, select, textarea {
       width: 100%;
-      padding: 12px;
-      font-size: 15px;
-      border-radius: 12px;
+      padding: 10px 12px;
+      margin-top: 5px;
+      margin-bottom: 12px;
+      border-radius: 10px;
       border: none;
       background: #2e3b59;
-      color: #e2e8f0;
-      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
+      color: #fff;
+      font-size: 14px;
+      box-sizing: border-box;
+      transition: background-color 0.3s;
     }
 
-    input:focus,
-    textarea:focus,
-    select:focus {
-      background: #3a4a72;
-      box-shadow: 0 0 8px 2px #4db8ff;
+    input:focus, select:focus, textarea:focus {
       outline: none;
-      color: #f0f9ff;
-    }
-
-    textarea {
-      resize: vertical;
+      background-color: #3b4a78;
     }
 
     button {
-      width: 100%;
-      margin-top: 28px;
-      padding: 14px;
-      font-size: 18px;
-      font-weight: 700;
+      padding: 12px;
+      border-radius: 12px;
       border: none;
-      border-radius: 16px;
+      font-weight: bold;
       cursor: pointer;
-      background: linear-gradient(90deg, #3a8dff, #00d2ff);
-      color: #fff;
-      box-shadow: 0 6px 15px rgba(0, 210, 255, 0.6);
-      transition: all 0.35s ease;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      background-color: #27ae60;
+      color: white;
     }
 
     button:hover {
-      background: linear-gradient(90deg, #00d2ff, #3a8dff);
-      box-shadow: 0 8px 20px rgba(0, 210, 255, 0.9);
-      transform: scale(1.05);
+      background-color: #1e8449;
     }
 
     .delete-btn {
-      background: linear-gradient(90deg, #ff5f6d, #ffc371);
-      box-shadow: 0 6px 15px rgba(255, 147, 147, 0.7);
-      margin-top: 14px;
+      background: #ff4d4d;
+      margin-top: 15px;
+      font-size: 15px;
     }
 
     .delete-btn:hover {
-      background: linear-gradient(90deg, #ffc371, #ff5f6d);
-      box-shadow: 0 8px 20px rgba(255, 147, 147, 0.9);
-      transform: scale(1.05);
+      background: #cc3c3c;
     }
 
     .output {
-      margin-top: 28px;
-      padding: 24px;
+      margin-top: 20px;
       background: #324a75;
-      border-radius: 16px;
-      color: #dbe9ff;
-      box-shadow: 0 0 15px rgba(66, 133, 244, 0.8);
-      font-size: 15px;
-      line-height: 1.5;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-      max-height: 300px;
+      padding: 15px;
+      border-radius: 10px;
+      max-height: 280px;
       overflow-y: auto;
+      font-size: 14px;
+      position: relative;
     }
 
-    .work-type {
-      color: #00d2ff;
-      font-weight: 700;
-      font-style: italic;
+    .homework-item {
+      border-bottom: 1px solid #4db8ff66;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      position: relative;
+    }
+
+    .delete-single {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.3s;
+    }
+
+    .delete-single:hover {
+      background: darkred;
+    }
+
+    /* Edit button styling */
+    .edit-single {
+      position: absolute;
+      top: 8px;
+      right: 40px; /* Space for delete button */
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.3s;
+    }
+
+    .edit-single:hover {
+      background: #357ABD;
     }
 
     .footer {
-      margin-top: 32px;
-      font-size: 13px;
-      color: #a3b1d1cc;
       text-align: center;
+      font-size: 13px;
+      color: #ccc;
+      margin-top: 20px;
       font-style: italic;
-      user-select: none;
-    }
-
-    @media (max-width: 500px) {
-      .container {
-        width: 95%;
-        padding: 25px;
-      }
     }
   </style>
 </head>
@@ -173,12 +180,12 @@
     <label for="rollNo">Roll No:</label>
     <input type="text" id="rollNo" placeholder="Enter your roll number" />
 
-    <label for="teacherName">Teacher Name:</label>
+    <label for="teacherName">Subject Teacher Name:</label>
     <input type="text" id="teacherName" placeholder="Enter teacher's name" />
 
     <label for="subject">Subject:</label>
     <select id="subject">
-      <option value="" disabled selected>Select a subject</option>
+      <option value="" disabled selected>Select A Subject</option>
       <option value="English">English</option>
       <option value="Hindi">Hindi</option>
       <option value="Marathi">Marathi</option>
@@ -198,23 +205,12 @@
     <input type="datetime-local" id="dateTime" />
 
     <label for="homework">Homework Details:</label>
-    <textarea
-      id="homework"
-      rows="4"
-      placeholder="Enter your homework here..."
-    ></textarea>
+    <textarea id="homework" rows="3" placeholder="Enter your homework here..."></textarea>
 
     <button onclick="saveHomework()">Save Homework</button>
 
     <div class="output" id="outputBox"></div>
-    <button
-      class="delete-btn"
-      id="deleteBtn"
-      style="display: none"
-      onclick="deleteHomework()"
-    >
-      Delete All Homework
-    </button>
+    <button class="delete-btn" id="deleteBtn" onclick="deleteHomework()">Delete All Homework</button>
 
     <div class="footer">
       Made By:- 9th Class Student [Sahil Riyaj Pathan] Of V.S.S English School Badnapur.
@@ -223,34 +219,39 @@
 
   <script>
     let homeworks = JSON.parse(localStorage.getItem('homeworks')) || [];
+    let editIndex = -1; // Tracks which homework is being edited, -1 means no editing
 
     function renderHomework() {
       const outputBox = document.getElementById('outputBox');
+      const deleteBtn = document.getElementById('deleteBtn');
+
       if (homeworks.length === 0) {
-        outputBox.innerHTML = '<p>No saved homework or class work.</p>';
-        document.getElementById('deleteBtn').style.display = 'none';
+        outputBox.innerHTML = '<p>No saved Homework or Class Work.</p>';
+        deleteBtn.style.display = 'none';
         return;
       }
 
-      let html = '<h3>Saved Work</h3>';
+      let html = '';
       homeworks.forEach((hw, index) => {
         html += `
-          <div style="margin-bottom:20px; border-bottom: 1px solid #4db8ff44; padding-bottom:10px;">
+          <div class="homework-item">
+            <button class="delete-single" onclick="deleteSingle(${index})" title="Delete">×</button>
+            <button class="edit-single" onclick="editHomework(${index})" title="Edit">✎</button>
             <p><strong>#${index + 1}</strong></p>
             <p><strong>Student Name:</strong> ${hw.name}</p>
             <p><strong>Class:</strong> ${hw.cls}</p>
             <p><strong>Roll No:</strong> ${hw.roll}</p>
-            <p><strong>Teacher Name:</strong> ${hw.teacher}</p>
+            <p><strong>Teacher:</strong> ${hw.teacher}</p>
             <p><strong>Subject:</strong> ${hw.subject}</p>
+            <p><strong>Work Type:</strong> ${hw.type}</p>
             <p><strong>Date & Time:</strong> ${hw.dateTime}</p>
-            <p><strong>Work:</strong> <span class="work-type">${hw.type}</span></p>
-            <p><strong>Details:</strong><br>${hw.homework}</p>
+            <p><strong>Details:</strong> ${hw.homework}</p>
           </div>
         `;
       });
 
       outputBox.innerHTML = html;
-      document.getElementById('deleteBtn').style.display = 'block';
+      deleteBtn.style.display = 'block';
     }
 
     function saveHomework() {
@@ -268,22 +269,22 @@
         return;
       }
 
-      homeworks.push({
-        name,
-        cls,
-        roll,
-        teacher,
-        subject,
-        type,
-        dateTime,
-        homework,
-      });
+      if (editIndex >= 0) {
+        // Update existing homework
+        homeworks[editIndex] = { name, cls, roll, teacher, subject, type, dateTime, homework };
+        editIndex = -1;
+        document.querySelector('button[onclick="saveHomework()"]').textContent = 'Save Homework';
+      } else {
+        // Add new homework
+        homeworks.push({ name, cls, roll, teacher, subject, type, dateTime, homework });
+      }
 
       localStorage.setItem('homeworks', JSON.stringify(homeworks));
-
       renderHomework();
+      clearInputs();
+    }
 
-      // Clear input fields
+    function clearInputs() {
       document.getElementById('studentName').value = '';
       document.getElementById('class').value = '';
       document.getElementById('rollNo').value = '';
@@ -294,16 +295,38 @@
       document.getElementById('homework').value = '';
     }
 
+    function deleteSingle(index) {
+      if (confirm('Delete this homework?')) {
+        homeworks.splice(index, 1);
+        localStorage.setItem('homeworks', JSON.stringify(homeworks));
+        renderHomework();
+      }
+    }
+
     function deleteHomework() {
-      if (confirm('Are you sure you want to delete all saved work?')) {
+      if (confirm('Delete all Homework entries?')) {
         homeworks = [];
         localStorage.removeItem('homeworks');
         renderHomework();
       }
     }
 
-    // Render on page load
-    renderHomework();
+    function editHomework(index) {
+      const hw = homeworks[index];
+      document.getElementById('studentName').value = hw.name;
+      document.getElementById('class').value = hw.cls;
+      document.getElementById('rollNo').value = hw.roll;
+      document.getElementById('teacherName').value = hw.teacher;
+      document.getElementById('subject').value = hw.subject;
+      document.getElementById('workType').value = hw.type;
+      document.getElementById('dateTime').value = hw.dateTime;
+      document.getElementById('homework').value = hw.homework;
+
+      editIndex = index;
+      document.querySelector('button[onclick="saveHomework()"]').textContent = 'Update Homework';
+    }
+
+    renderHomework(); // Show saved homework on page load
   </script>
 </body>
 </html>
