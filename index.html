@@ -132,11 +132,10 @@
       background: darkred;
     }
 
-    /* Edit button styling */
     .edit-single {
       position: absolute;
       top: 8px;
-      right: 40px; /* Space for delete button */
+      right: 40px;
       background: #4a90e2;
       color: white;
       border: none;
@@ -163,6 +162,45 @@
       color: #ccc;
       margin-top: 20px;
       font-style: italic;
+    }
+
+    /* ✅ Responsive for mobile devices */
+    @media (max-width: 480px) {
+      .container {
+        margin: 20px 10px;
+        padding: 20px 15px;
+        border-radius: 10px;
+      }
+
+      h1, h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      input, select, textarea {
+        font-size: 13px;
+        padding: 8px 10px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+      .delete-single, .edit-single {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+      }
+
+      .output {
+        font-size: 13px;
+        padding: 10px;
+      }
+
+      .footer {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -219,7 +257,7 @@
 
   <script>
     let homeworks = JSON.parse(localStorage.getItem('homeworks')) || [];
-    let editIndex = -1; // Tracks which homework is being edited, -1 means no editing
+    let editIndex = -1;
 
     function renderHomework() {
       const outputBox = document.getElementById('outputBox');
@@ -270,12 +308,10 @@
       }
 
       if (editIndex >= 0) {
-        // Update existing homework
         homeworks[editIndex] = { name, cls, roll, teacher, subject, type, dateTime, homework };
         editIndex = -1;
         document.querySelector('button[onclick="saveHomework()"]').textContent = 'Save Homework';
       } else {
-        // Add new homework
         homeworks.push({ name, cls, roll, teacher, subject, type, dateTime, homework });
       }
 
@@ -326,7 +362,7 @@
       document.querySelector('button[onclick="saveHomework()"]').textContent = 'Update Homework';
     }
 
-    renderHomework(); // Show saved homework on page load
+    renderHomework();
   </script>
 </body>
 </html>
